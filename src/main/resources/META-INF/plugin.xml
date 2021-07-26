@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>org.example.work_checker</id>
+    <name>JavaGuru Students Works Checker</name>
+    <vendor email="javaguru@gmail.com" url="http://www.javaguru.lv">JavaGuru</vendor>
+
+    <description>Plugin for check and control student works</description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="1" class="CheckPackageAction" text="Check CodeReview Annotation">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="before" relative-to-action="CutCopyPasteGroup"/>
+        </action>
+    </actions>
+</idea-plugin>
