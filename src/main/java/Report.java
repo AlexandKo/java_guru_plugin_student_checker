@@ -1,14 +1,7 @@
 import java.util.List;
 
 public class Report {
-    private String report = "";
-
-    public Report() {
-    }
-
-    public Report(String errorMessage) {
-        report = errorMessage;
-    }
+    private String report="";
 
     public void addStringToReport(String newString) {
         report += newString;

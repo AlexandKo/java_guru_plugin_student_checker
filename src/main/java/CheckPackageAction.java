@@ -21,7 +21,7 @@ public class CheckPackageAction extends AnAction {
         }
 
         Report report = new Report();
-        createTeacherreport(e, allFiles, report);
+        createTeacherReport(e, allFiles, report);
         createStudentReport(e, allFiles, report);
 
         assert allFiles != null;
@@ -32,7 +32,7 @@ public class CheckPackageAction extends AnAction {
         }
     }
 
-    private void createTeacherreport(@NotNull AnActionEvent e, List<String> allFiles, Report report) {
+    private void createTeacherReport(@NotNull AnActionEvent e, List<String> allFiles, Report report) {
         TeacherCodeReviewAnalysis teacherCodeReviewAnalysis = new TeacherCodeReviewAnalysis();
 
         try {

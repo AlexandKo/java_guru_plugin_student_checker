@@ -2,31 +2,27 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiAnnotationMemberValue;
 import com.intellij.psi.PsiClass;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.PsiShortNamesCache;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class TeacherCodeReviewAnalysis implements CodeReviewAnalyzer {
     private final List<String> failedCodeReview = new ArrayList<>();
+    private final Util util = new Util();
     private int classesCount = 0;
     private int codeReviewPassed = 0;
     private int codeReviewFailed = 0;
 
     @Override
     public void getAnalysis(List<String> classes, Report report, AnActionEvent e) throws ClassNotFoundException {
+        ClassService classService = new ClassService();
 
         report.addStringToReport("Code Review report:\n");
 
         for (String className : classes) {
-            PsiClass[] psiClass = PsiShortNamesCache.getInstance(Objects.requireNonNull(e.getProject()))
-                    .getClassesByName(className, GlobalSearchScope.everythingScope(e.getProject()));
-
-            PsiClass cls = chooseCorrectClass(psiClass);
+            PsiClass cls = classService.getClass(className, e);
 
             PsiAnnotation codeReviewAnnotation = null;
             if (cls != null) {
@@ -35,9 +31,9 @@ public class TeacherCodeReviewAnalysis implements CodeReviewAnalyzer {
             }
 
             if (codeReviewAnnotation != null) {
-                PsiAnnotationMemberValue val = codeReviewAnnotation.findAttributeValue("approved");
+                PsiAnnotationMemberValue val = util.getAnnotationAttributeValue(codeReviewAnnotation);
                 assert val != null;
-                if (isCodeReviewTrue(val.getText())) {
+                if (util.isCodeReviewTrue(val.getText())) {
                     codeReviewPassed++;
                 } else {
                     failedCodeReview.add(cls.getQualifiedName() + "." + className);
@@ -46,7 +42,6 @@ public class TeacherCodeReviewAnalysis implements CodeReviewAnalyzer {
                 classesCount++;
             }
         }
-
         createReport(report);
     }
 
@@ -68,21 +63,5 @@ public class TeacherCodeReviewAnalysis implements CodeReviewAnalyzer {
             }
         }
         return codeReviewAnnotation;
-    }
-
-    @Nullable
-    private PsiClass chooseCorrectClass(PsiClass[] psiClass) {
-        PsiClass cls = null;
-        for (PsiClass p : psiClass) {
-            if (p.getClass().toString().contains("PsiClassImpl")) {
-                cls = p;
-                break;
-            }
-        }
-        return cls;
-    }
-
-    private boolean isCodeReviewTrue(String annotationValue) {
-        return annotationValue.equals("true");
     }
 }
