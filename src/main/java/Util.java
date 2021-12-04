@@ -10,7 +10,7 @@ public class Util {
     }
 
     @Nullable
-    public PsiAnnotation findCodeReviewAnnotation(PsiAnnotation[] classAnnotation,String annotationName) {
+    public PsiAnnotation findCodeReviewAnnotation(PsiAnnotation[] classAnnotation, String annotationName) {
         PsiAnnotation codeReviewAnnotation = null;
         for (PsiAnnotation annotation : classAnnotation) {
             boolean isCodeReviewAnnotation = annotation.getText().contains(annotationName);
