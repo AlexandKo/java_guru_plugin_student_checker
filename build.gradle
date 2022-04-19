@@ -22,7 +22,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      Update for 2021.3.<br>"""
+      Update for 2022.1.<br>"""
 }
 test {
     useJUnitPlatform()
